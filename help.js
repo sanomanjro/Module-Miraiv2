@@ -14,4 +14,4 @@ var msg = ["hiện tại code này là do DuyVuong code ở phiên bản 1.0.2",
 var cc = Math.floor(Math.random() * msg.length);
 var lon = "[Bạn có biết?]: ${msg}.";
 return api.sendMessage($lon, event.threadID, event.messageID);
-}
+};
