@@ -1,13 +1,14 @@
 module.exports.config = {
-  name: "help",
-  version: "2.0.1",
-  hasPermssion: 0,
-  credits: "DuyVuong",
-  description: "Help tự gỡ sau số thời gian đã ra =))))",
-  commandCategory: "system",
-  usages: "[lệnh]",
-  cooldowns: 5,
+	name: "help",
+	version: "1.1.3",
+	hasPermssion: 0,
+	credits: "DuyVuong",
+	description: "Hướng dẫn cho người mới và tự gỡ sau 60s",
+	commandCategory: "system",
+	usages: "[Tên module]",
+	cooldowns: 5
 };
+
 module.exports.handleEvent = function ({ api, event }) {
 	const { commands } = global.client;
 	
@@ -27,10 +28,10 @@ module.exports.handleEvent = function ({ api, event }) {
 
 	const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
 
-	return api.sendMessage(`「 ${command.config.name} 」\n${command.config.description}\n\n❯ Cách sử dụng: ${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}\n❯ Thuộc nhóm: ${command.config.commandCategory}\n❯ Thời gian chờ: ${command.config.cooldowns} giây(s)\n❯ Quyền hạn: ${((command.config.hasPermssion == 0) ? "Người dùng" : (command.config.hasPermssion == 1) ? "Quản trị viên" : "Người vận hành bot" )}\n\n» Module code by ${command.config.credits} «`, threadID, messageID);
+	return api.sendMessage(`⚔️ ${command.config.name} ⚔️\n${command.config.description}\n\n❯ Cách sử dụng: ${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}\n❯ Thuộc nhóm: ${command.config.commandCategory}\n❯ Thời gian chờ: ${command.config.cooldowns} giây(s)\n❯ Quyền hạn: ${((command.config.hasPermssion == 0) ? "Người dùng" : (command.config.hasPermssion == 1) ? "Quản trị viên" : "Người vận hành bot" )}\n\n» Module code by ${command.config.credits} «`, threadID, messageID);
 }
 
-module.exports.run = async function({ api, event, client }) {
+module.exports.run = function({ api, event, args }) {
 	const { commands } = global.client;
 	const { threadID, messageID } = event;
 	const command = commands.get((args[0] || "").toLowerCase());
@@ -43,17 +44,20 @@ module.exports.run = async function({ api, event, client }) {
 			if (!group.some(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase())) group.push({ group: commandConfig.config.commandCategory.toLowerCase(), cmds: [commandConfig.config.name] });
 			else group.find(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase()).cmds.push(commandConfig.config.name);
 		}
-		group.forEach(commandGroup => msg += `「 ${commandGroup.group.charAt(0).toUpperCase() + commandGroup.group.slice(1)} 」\n${commandGroup.cmds.join(', ')}\n\n`);
-		api.sendMessage(msg + `[ Sử dụng: "${(threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX}help từng lệnh ở trên" để xem chi tiết cách sử dụng! | Hiện tại đang có ${commands.size} lệnh có thể sử dụng trên bot này ]\n⚔Help sẽ tự gỡ sau 60 giây nhé !⚔`, threadID);
-        // tính thời gian
-        const time = process.uptime(),
-        seconds = Math.floor(time % 60);
-        if (seconds == 60) {
-        	return api.unsendMessage(event.messageReply.messageID);
-        }
+		group.forEach(commandGroup => msg += `⚔️ ${commandGroup.group.charAt(0).toUpperCase() + commandGroup.group.slice(1)} ⚔️\n${commandGroup.cmds.join(', ')}\n\n`);
+		var concac = msg + `[ Sử dụng: "${(threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX}help từng lệnh ở trên" để xem chi tiết cách sử dụng! | Hiện tại đang có ${commands.size} lệnh có thể sử dụng trên bot này ]\n⚔️Help sẽ tự động gỡ sau 60 giây !`;
+		api.sendMessage(concac, threadID, async function (error, info){
+		const time = process.uptime(),
+		hours = Math.floor(time / (60 * 60)),
+		minutes = Math.floor((time % (60 * 60)) / 60),
+		seconds = Math.floor(time % 60);
+		if (seconds == 60) {
+     return api.unsendMessage(info.messageID);
+		}
+	}
 	}
 
 	const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
 
-	return api.sendMessage(`「 ${command.config.name} 」\n${command.config.description}\n\n❯ Cách sử dụng: ${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}\n❯ Thuộc nhóm: ${command.config.commandCategory}\n❯ Thời gian chờ: ${command.config.cooldowns} giây(s)\n❯ Quyền hạn: ${((command.config.hasPermssion == 0) ? "Người dùng" : (command.config.hasPermssion == 1) ? "Quản trị viên" : "Người vận hành bot" )}\n\n» Module code by ${command.config.credits} «`, threadID, messageID);
-};
+	return api.sendMessage(`⚔️ ${command.config.name} ⚔️\n${command.config.description}\n\n❯ Cách sử dụng: ${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}\n❯ Thuộc nhóm: ${command.config.commandCategory}\n❯ Thời gian chờ: ${command.config.cooldowns} giây(s)\n❯ Quyền hạn: ${((command.config.hasPermssion == 0) ? "Người dùng" : (command.config.hasPermssion == 1) ? "Quản trị viên" : "Người vận hành bot" )}\n\n» Module code by ${command.config.credits} «`, threadID, messageID);
+}
