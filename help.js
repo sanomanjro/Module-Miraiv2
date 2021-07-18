@@ -44,7 +44,7 @@ module.exports.run = function({ api, event, args }) {
 			if (!group.some(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase())) group.push({ group: commandConfig.config.commandCategory.toLowerCase(), cmds: [commandConfig.config.name] });
 			else group.find(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase()).cmds.push(commandConfig.config.name);
 		}
-        var tl = ["bạn đã biết","tôi không có khả năng hiểu con gái","Duy là tên thằng chạy bot này","tôi có thể ký ngực các bạn gái được không?"];
+        var tl = ["bạn đã biết","tôi không có khả năng hiểu con gái","Duy là tên thằng chạy bot này","tôi có thể ký ngực các bạn gái được không?"/* Tự thêm nhé */];
         var ti = tl[Math.floor(Math.random() * tl.length)];
 return api.sendMessage(`[Bạn có biết?] : ${ti}.`,threadID, messageID);
 
