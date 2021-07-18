@@ -1,6 +1,6 @@
 module.exports.config = {
 	name: "help",
-	version: "1.0.1",
+	version: "1.0.2",
 	hasPermssion: 0,
 	credits: "Mirai Team & Update by DuyVuong",
 	description: "Hướng dẫn cho người mới",
