@@ -1,13 +1,14 @@
 module.exports.config = {
 	name: "help",
-	version: "1.1.2",
+	version: "1.0.1",
 	hasPermssion: 0,
-	credits: "DuyVuong",
-	description: "khóa help VjpPr0",
-	commandCategory: "group",
-	usages: "[lệnh]",
-	cooldowns: 5,
+	credits: "Mirai Team & Mod by DuyVuong",
+	description: "Hướng dẫn cho người mới",
+	commandCategory: "system",
+	usages: "[Tên module]",
+	cooldowns: 5
 };
+
 module.exports.handleEvent = function ({ api, event }) {
 	const { commands } = global.client;
 	
@@ -27,21 +28,29 @@ module.exports.handleEvent = function ({ api, event }) {
 
 	const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
 
-	return api.sendMessage(`⚔️ ${command.config.name} ⚔️\n${command.config.description}\n\n❯ Cách sử dụng: ${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}\n❯ Thuộc nhóm: ${command.config.commandCategory}\n❯ Thời gian chờ: ${command.config.cooldowns} giây(s)\n❯ Quyền hạn: ${((command.config.hasPermssion == 0) ? "Người dùng" : (command.config.hasPermssion == 1) ? "Quản trị viên" : "Người vận hành bot" )}\n❯ Prefix: ${prefix}\n\n» Module code by ${command.config.credits} «`, threadID, messageID);
-};
-
-module.exports.run = async function({ api, args, Users, event, Threads, utils, client }) {
-const { commands } = global.client;
-const { threadID, messageID } = event;
-const command = commands.get((args[0] || "").toLowerCase());
-const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
-if (!command) {
-const command = commands.values();
-var tl = ["hiện tại code này là do DuyVuong code ở phiên bản 1.1.2","con bot này thông minh hơn bạn","bạn đã biết","tôi không có khả năng hiểu con gái"/* tự thêm */];
-var tle = tl[Math.floor(Math.random() * tl.length)];
-var lon = "[Bạn có biết?]: ${tle}.";
-return api.sendMessage($lon, event.threadID, event.messageID);
+	return api.sendMessage(`⚔ ${command.config.name} ⚔\n${command.config.description}\n\n❯ Cách sử dụng: ${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}\n❯ Thuộc nhóm: ${command.config.commandCategory}\n❯ Thời gian chờ: ${command.config.cooldowns} giây(s)\n❯ Quyền hạn: ${((command.config.hasPermssion == 0) ? "Người dùng" : (command.config.hasPermssion == 1) ? "Quản trị viên" : "Người vận hành bot" )}\n\n» Module code by ${command.config.credits} «`, threadID, messageID);
 }
-const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
-return api.sendMessage(`⚔️ ${command.config.name} ⚔️\n${command.config.description}\n\n❯ Cách sử dụng: ${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}\n❯ Thuộc nhóm: ${command.config.commandCategory}\n❯ Thời gian chờ: ${command.config.cooldowns} giây(s)\n❯ Quyền hạn: ${((command.config.hasPermssion == 0) ? "Người dùng" : (command.config.hasPermssion == 1) ? "Quản trị viên" : "Người vận hành bot" )}\n❯ Prefix: ${prefix}\n\n» Module code by ${command.config.credits} «`, threadID, messageID);
-};
+
+module.exports.run = function({ api, event, args }) {
+	const { commands } = global.client;
+	const { threadID, messageID } = event;
+	const command = commands.get((args[0] || "").toLowerCase());
+	const threadSetting = global.data.threadData.get(parseInt(threadID)) || {};
+	
+	if (!command) {
+		const command = commands.values();
+		var group = [], msg = "";
+		for (const commandConfig of command) {
+			if (!group.some(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase())) group.push({ group: commandConfig.config.commandCategory.toLowerCase(), cmds: [commandConfig.config.name] });
+			else group.find(item => item.group.toLowerCase() == commandConfig.config.commandCategory.toLowerCase()).cmds.push(commandConfig.config.name);
+		}
+        var tl = ["bạn đã biết","tôi không có khả năng hiểu con gái","Duy là tên thằng chạy bot này","tôi có thể ký ngực các bạn gái được không?"];
+        var ti = tl[Math.floor(Math.random() * tl.length)];
+return api.sendMessage(`[Bạn có biết?] : ${ti}.`,threadID, messageID);
+
+	}
+
+	const prefix = (threadSetting.hasOwnProperty("PREFIX")) ? threadSetting.PREFIX : global.config.PREFIX;
+
+	return api.sendMessage(`⚔ ${command.config.name} ⚔\n${command.config.description}\n\n❯ Cách sử dụng: ${prefix}${command.config.name} ${(command.config.usages) ? command.config.usages : ""}\n❯ Thuộc nhóm: ${command.config.commandCategory}\n❯ Thời gian chờ: ${command.config.cooldowns} giây(s)\n❯ Quyền hạn: ${((command.config.hasPermssion == 0) ? "Người dùng" : (command.config.hasPermssion == 1) ? "Quản trị viên" : "Người vận hành bot" )}\n\n» Module code by ${command.config.credits} «`, threadID, messageID);
+}
