@@ -1,5 +1,5 @@
 module.exports.config = {
-	name:"uptimev2",
+	name:"uptime",
 	version: "1.0.0",
 	hasPermssion: 0,
 	credits: "DuyVuong",
